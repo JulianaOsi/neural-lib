@@ -54,7 +54,7 @@ double ** cycle(double** weights, int* neuronsPerLayer, int layersNum) {     //Ð
 	for (int i = 1; i < layersNum; i++) {
 		layerStart[i] = layerStart[i - 1] + neuronsPerLayer[i - 1];
 		for (int k = 0; k < neuronsPerLayer[i]; k++) {
-			weights[layerStart[i] + k][layerStart[i] + k] = 0;
+			
 			for (int j = 0; j < neuronsPerLayer[i - 1]; j++)
 				weights[layerStart[i] + k][layerStart[i] + k] += weights[layerStart[i - 1] + j][layerStart[i - 1] + j] * weights[neuronsPerLayer[i - 1] + k][layerStart[i - 1] + j];
 			weights[layerStart[i] + k][layerStart[i] + k] = sigm(weights[layerStart[i] + k][layerStart[i] + k]);
@@ -114,7 +114,8 @@ void exploitation(double** weights, int* neuronsPerLayer, int layersNum) {
 		expected = 1;
 	}
 	cout << "Expexted answer: " << expected << endl;
-	cout << "Actual answer: " << answer(weights[neuronsPerLayer[2]][neuronsPerLayer[2]]) << endl;
+	cout << "value of last neu: " << weights[5][5];
+	cout << "Actual answer: " << answer(weights[5][5]) << endl;
 }
 
 double sigm(double x) {

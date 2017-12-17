@@ -11,7 +11,7 @@ void main() {
 	int layersNum = 3, neuronsNum = 0;
 	neuronsNum = neuronsCounter(neuronsPerLayer, layersNum);
 	weights = matrixCreation(neuronsPerLayer, layersNum);
-	for (int i = 0; i < 100; i++) {
+	for (int i = 0; i < 4; i++) {
 		int k = rand() % 4 + 0;
 		cout << "epoch #" << i << "\t" << "Enter inputs:" << "k = " << k << "\n";
 		for (int j = 0; j < neuronsPerLayer[0]; j++) {				// сделать рандомно
@@ -22,7 +22,8 @@ void main() {
 		writeToFile("weights.txt", weights, neuronsNum);
 
 	}
-	exploitation(weights, neuronsPerLayer, layersNum);
+	for(int i=0;i<4;i++)
+		exploitation(weights, neuronsPerLayer, layersNum);
 
 	system("pause");
 }
