@@ -56,7 +56,7 @@ double ** cycle(double** weights, int* neuronsPerLayer, int layersNum) {     //�
 		for (int k = 0; k < neuronsPerLayer[i]; k++) {
 			
 			for (int j = 0; j < neuronsPerLayer[i - 1]; j++)
-				weights[layerStart[i] + k][layerStart[i] + k] += weights[layerStart[i - 1] + j][layerStart[i - 1] + j] * weights[layerStart[i] + k][layerStart[i - 1] + j];//самый последний вес на месте ли?
+				weights[layerStart[i] + k][layerStart[i] + k] += weights[layerStart[i - 1] + j][layerStart[i - 1] + j] * weights[layerStart[i - 1] + j][layerStart[i] + k];//самый последний вес на месте ли?
 			weights[layerStart[i] + k][layerStart[i] + k] = sigm(weights[layerStart[i] + k][layerStart[i] + k]);
 		}
 	}
@@ -71,7 +71,7 @@ double ** cycle(double** weights, int* neuronsPerLayer, int layersNum, double ex
 		for (int k = 0; k < neuronsPerLayer[i]; k++) {
 			weights[layerStart[i] + k][layerStart[i] + k] = 0;
 			for (int j = 0; j < neuronsPerLayer[i - 1]; j++)
-				weights[layerStart[i] + k][layerStart[i] + k] += weights[layerStart[i - 1] + j][layerStart[i - 1] + j] * weights[layerStart[i] + k][layerStart[i - 1] + j];//самый последний вес на месте ли?
+				weights[layerStart[i] + k][layerStart[i] + k] += weights[layerStart[i - 1] + j][layerStart[i - 1] + j] * weights[layerStart[i - 1] + j][layerStart[i] + k];//самый последний вес на месте ли?
 			weights[layerStart[i] + k][layerStart[i] + k] = sigm(weights[layerStart[i] + k][layerStart[i] + k]);
 		}
 	}
