@@ -54,9 +54,9 @@ double ** cycle(double** weights, int* neuronsPerLayer, int layersNum) {     //�
 	for (int i = 1; i < layersNum; i++) {
 		layerStart[i] = layerStart[i - 1] + neuronsPerLayer[i - 1];
 		for (int k = 0; k < neuronsPerLayer[i]; k++) {
-			
+			weights[layerStart[i] + k][layerStart[i] + k] = 0;
 			for (int j = 0; j < neuronsPerLayer[i - 1]; j++)
-				weights[layerStart[i] + k][layerStart[i] + k] += weights[layerStart[i - 1] + j][layerStart[i - 1] + j] * weights[layerStart[i - 1] + j][layerStart[i] + k];//самый последний вес на месте ли?
+				weights[layerStart[i] + k][layerStart[i] + k] += weights[layerStart[i - 1] + j][layerStart[i - 1] + j] * weights[layerStart[i] + k][layerStart[i - 1] + j];//самый последний вес на месте ли?
 			weights[layerStart[i] + k][layerStart[i] + k] = sigm(weights[layerStart[i] + k][layerStart[i] + k]);
 		}
 	}
@@ -71,11 +71,11 @@ double ** cycle(double** weights, int* neuronsPerLayer, int layersNum, double ex
 		for (int k = 0; k < neuronsPerLayer[i]; k++) {
 			weights[layerStart[i] + k][layerStart[i] + k] = 0;
 			for (int j = 0; j < neuronsPerLayer[i - 1]; j++)
-				weights[layerStart[i] + k][layerStart[i] + k] += weights[layerStart[i - 1] + j][layerStart[i - 1] + j] * weights[layerStart[i - 1] + j][layerStart[i] + k];//самый последний вес на месте ли?
+				weights[layerStart[i] + k][layerStart[i] + k] += weights[layerStart[i - 1] + j][layerStart[i - 1] + j] * weights[layerStart[i] + k][layerStart[i - 1] + j];//самый последний вес на месте ли?
 			weights[layerStart[i] + k][layerStart[i] + k] = sigm(weights[layerStart[i] + k][layerStart[i] + k]);
 		}
 	}
-	weights = backWay(weights, weights[layerStart[layersNum-1]][layerStart[layersNum-1]], expected, layersNum, layerStart);// правильно ли передаётся?
+	weights = backWay(weights, weights[layerStart[layersNum-1]][layerStart[layersNum-1]], expected, layersNum, layerStart);
 	return weights;
 }
 
@@ -87,12 +87,13 @@ double **backWay(double**weights, double actual, double expected, int layersNum,
 
 	double error;
 
-	for (int i = layerStart[layersNum - 2]; i < layerStart[layersNum - 1]; i++)
-		error = error_of_neu(weights[layerStart[layersNum - 1]][i]);//надо расширить цикл до конца??
-	for (int k = layersNum - 2; k>0; k--)
-		for (int m = layerStart[k]; m<layerStart[k + 1]; m++)
-			for (int j = layerStart[k - 1]; j<layerStart[k]; j++)
-				new_weight(weights[m][m], weights[m][j], error); //присвоить значение
+	for (int i = layerStart[layersNum - 2]; i < layerStart[layersNum - 1]; i++) {
+		error = error_of_neu(weights[layerStart[layersNum - 1]][i]);
+		for (int k = layersNum - 2; k > 0; k--)
+			for (int m = layerStart[k]; m < layerStart[k + 1]; m++)
+				for (int j = layerStart[k - 1]; j < layerStart[k]; j++)
+					weights[m][j] = new_weight(weights[m][m], weights[m][j], error);
+	}
 	return weights;
 
 }
@@ -114,14 +115,14 @@ void exploitation(double** weights, int* neuronsPerLayer, int layersNum) {
 		expected = 1;
 	}
 	cout << "Expexted answer: " << expected << endl;
-	cout << "value of last neu: " << weights[5][5];
+	cout << "val: " << weights[5][5] << endl;
 	cout << "Actual answer: " << answer(weights[5][5]) << endl;
 }
 
 double sigm(double x) {
-	cout << "prev " << x << "\n";
+	//cout << "prev " << x << "\n";
 	double sigm = (1 / (1 + exp(-x)));
-	cout << "aft " << sigm << "\n";
+	//cout << "aft " << sigm << "\n";
 	return sigm;
 }
 
